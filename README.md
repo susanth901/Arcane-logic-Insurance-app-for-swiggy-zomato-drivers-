@@ -1,27 +1,43 @@
-# VayuGuard — AI-Powered Income Stabilization Engine for Gig Workers
+# VayuGuard Backend (FastAPI)
 
-> Not just insurance. We guarantee minimum earnings during disruptions.
+Quickstart (local/demo):
 
-VayuGuard is a real-time income stabilization system that predicts earnings and guarantees a minimum income floor during disruptions.
+1. Create virtualenv and install:
 
-## How VayuGuard Is Different
+```powershell
+cd backend
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r requirements.txt
+```
 
-*   **Predicts expected weekly earnings**
-*   **Guarantees a minimum income floor**
-*   **Automatically bridges income gaps during disruptions**
-*   **Uses multi-layer trust validation to prevent abuse**
+2. Copy `.env.example` to `.env` and edit keys (see notes below).
 
-## System Overview
+3. Run the app:
 
-VayuGuard replaces generic insurance terminology and systems with proactive income stabilization:
-*   **Active Protection** (formerly Coverage)
-*   **Protection Plan** (formerly Insurance Policy)
-*   **Auto Adjustment** (formerly Claim)
-*   **Income Stabilization Payment** (formerly Payout)
+```powershell
+uvicorn app.main:app --reload --port 8000
+```
 
-### Core Features
+API base: `http://localhost:8000`
 
-*   **Guaranteed Income Floor**: Dashboard visibility into Predicted Earnings, Current Earnings, and Gap Covered.
-*   **Real-time Analysis**: Analyzing Disruption Impact when earnings drop below the guaranteed floor, automatically calculating and covering the gap.
-*   **Co-funded Model**: Weekly Protection Plan with flat rate structures (e.g., ₹35 user pays, ₹15 platform pays) for worker stability.
-*   **Trust Engine**: Ensures fair payouts using behavioral, device, network, and peer validation.
+Env vars (in `.env`):
+- `OPENWEATHER_API_KEY` — Get from https://openweathermap.org (free tier). Create account → API keys → copy key.
+- `DATABASE_URL` — If you want Supabase Postgres, create a project at https://supabase.com, open Project → Settings → Database → Connection string and paste the Postgres URL. For local dev the default uses SQLite (`sqlite:///./backend.db`).
+- `CORS_ORIGINS` — comma-separated origins for frontend, default: `http://localhost:5173`
+
+Notes:
+- If `OPENWEATHER_API_KEY` is not set the service falls back to simulated weather so you can run the demo without external keys.
+- `ipapi.co` is used for simple IP lookups; no key required for basic lookup. If you prefer `ipinfo` provide a token and update `app/services/ip_check.py`.
+
+Quick test flow (after server is running):
+
+1. Register a user:
+
+```bash
+curl -X POST "http://localhost:8000/auth/register" -H "Content-Type: application/json" -d '{"phone":"+911234567890","platform":"deliver"}'
+```
+
+Response includes `api_key` — send it as header `X-API-Key` or `Authorization: Bearer <key>` for protected endpoints.
+
+2. Use `/events/check`, `/claims`, and `/video/verify` as described in the code. Open `http://localhost:8000/docs` for interactive docs.
