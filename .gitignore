@@ -1,0 +1,49 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Root / OS
+.DS_Store
+*.pem
+.env*
+!frontend/.env.production
+.vercel
+
+# =========================
+# FRONTEND (Next.js/React)
+# =========================
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/build/
+frontend/coverage/
+frontend/.pnp
+frontend/.pnp.*
+frontend/.yarn/*
+!frontend/.yarn/patches
+!frontend/.yarn/plugins
+!frontend/.yarn/releases
+!frontend/.yarn/versions
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/.pnpm-debug.log*
+frontend/*.tsbuildinfo
+frontend/next-env.d.ts
+
+# =========================
+# BACKEND (Python/FastAPI)
+# =========================
+backend/__pycache__/
+backend/*.py[cod]
+backend/*$py.class
+backend/.venv/
+backend/venv/
+backend/env/
+backend/.pytest_cache/
+backend/backend.db
+backend/*.db
+
+# Global Fallbacks (just in case)
+node_modules/
+__pycache__/
+.venv/
+.next/
